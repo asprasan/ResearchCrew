@@ -1,6 +1,9 @@
 # Researchcrew Crew
 
-Welcome to the Researchcrew Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+Welcome to the Researchcrew project, powered by [crewAI](https://crewai.com). 
+
+The goal of this project is to provide a multi-agent system that can perform complex research tasks, leveraging the capabilities of various AI agents working together, with a human in the loop that guides the process.
+
 
 ## Installation
 
@@ -18,37 +21,27 @@ Next, navigate to your project directory and install the dependencies:
 ```bash
 crewai install
 ```
-### Customizing
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+### Setting up Environment Variables
 
-- Modify `src/researchcrew/config/agents.yaml` to define your agents
-- Modify `src/researchcrew/config/tasks.yaml` to define your tasks
-- Modify `src/researchcrew/crew.py` to add your own logic, tools and specific args
-- Modify `src/researchcrew/main.py` to add custom inputs for your agents and tasks
+The crew and the agents need an LLM to operate. You can use any LLM supported by crewAI. 
+
+As of now, we use a single LLM for all the tasks. In the future, we may choose to use different LLMs for tasks of different complexity.
+
+```bash
+cp .env.example .env
+```
+
+Then, edit the `.env` file and add your API keys.
 
 ## Running the Project
 
 To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
 
 ```bash
-$ crewai run
+crewai run
 ```
 
 This command initializes the ResearchCrew Crew, assembling the agents and assigning them tasks as defined in your configuration.
 
 This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
-
-## Understanding Your Crew
-
-The ResearchCrew Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
-
-## Support
-
-For support, questions, or feedback regarding the Researchcrew Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
-
-Let's create wonders together with the power and simplicity of crewAI.

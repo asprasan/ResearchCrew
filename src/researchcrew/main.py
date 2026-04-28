@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import sys
 import warnings
-
+from dotenv import load_dotenv
 from datetime import datetime
-
 from researchcrew.crew import Researchcrew
+load_dotenv()
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
@@ -17,9 +17,13 @@ def run():
     """
     Run the crew.
     """
+    with open("input.md", "r") as f:
+        topic = f.read()
+    print(f"Research starting on the topic: \n {topic}")
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
+        'topic': topic,
+        'current_year': str(datetime.now().year),
+        'industry_type': "Food industry",
     }
 
     try:
@@ -33,7 +37,7 @@ def train():
     Train the crew for a given number of iterations.
     """
     inputs = {
-        "topic": "AI LLMs",
+        "topic": "Most popular food products on the German supermarket shelves and their nutritional values",
         'current_year': str(datetime.now().year)
     }
     try:

@@ -1,6 +1,8 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
+
+from researchcrew.tools.ai_tools import exa_tool
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
@@ -11,7 +13,6 @@ class Researchcrew():
 
     agents: list[BaseAgent]
     tasks: list[Task]
-
     # Learn more about YAML configuration files here:
     # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
     # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
@@ -19,10 +20,28 @@ class Researchcrew():
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
+    def web_crawler(self) -> Agent:
+        return Agent(
+            config=self.agents_config['web_crawler'], # type: ignore[index]
+            tools=[exa_tool],
+            verbose=True,
+            max_retry_limit=2,
+        )
+    
+    @agent
+    def webscraper(self) -> Agent:
+        return Agent(
+            config=self.agents_config['webscraper'], # type: ignore[index]
+            tools=[exa_tool],
+            verbose=True,
+            max_retry_limit=2,
+        )
+
+    @agent
     def researcher(self) -> Agent:
         return Agent(
             config=self.agents_config['researcher'], # type: ignore[index]
-            verbose=True
+            verbose=True,
         )
 
     @agent
@@ -35,6 +54,18 @@ class Researchcrew():
     # To learn more about structured task outputs,
     # task dependencies, and task callbacks, check out the documentation:
     # https://docs.crewai.com/concepts/tasks#overview-of-a-task
+    @task
+    def webcrawler_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['webcrawler_task'], # type: ignore[index]
+        )
+    
+    @task
+    def webscraper_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['webscraper_task'], # type: ignore[index]
+        )
+    
     @task
     def research_task(self) -> Task:
         return Task(
@@ -59,5 +90,12 @@ class Researchcrew():
             tasks=self.tasks, # Automatically created by the @task decorator
             process=Process.sequential,
             verbose=True,
+            embedder={
+                "provider": "google-generativeai",
+                "config": {
+                    "model": "gemini-embedding-001",
+                    }
+                    },
+            memory=True,
             # process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
         )
