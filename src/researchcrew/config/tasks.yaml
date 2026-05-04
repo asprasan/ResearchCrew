@@ -33,5 +33,7 @@ reporting_task:
   expected_output: >
     A fully fledged report with the main topics, each with a full section of information.
     The report should contain cite the URLs when there are non-trivial information that is extracted from the web pages.
-    Formatted as markdown without '```'
+    Formatted as markdown without '```'.
+    The output should contain the sections titled 'Summary of the task', 'Clarifying questions to the user (if any)',
+    'Possible future direction of investigation (if any)'
   agent: reporting_analyst

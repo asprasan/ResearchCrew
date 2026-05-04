@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import os
+from pathlib import Path
 import sys
 import warnings
 from dotenv import load_dotenv
@@ -8,17 +10,25 @@ load_dotenv()
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
-# This main file is intended to be a way for you to run your
-# crew locally, so refrain from adding unnecessary logic into this file.
-# Replace with inputs you want to test with, it will automatically
-# interpolate any tasks and agents information
-
 def run():
     """
     Run the crew.
     """
-    with open("input.md", "r") as f:
-        topic = f.read()
+    input_dir = Path(os.environ['INPUT_DIR'])
+    output_dir = Path(os.environ['OUTPUT_DIR'])
+    # list and sort files
+    files=sorted(output_dir.glob("*.md"))
+    if len(files) > 0:
+        with open(files[-1], 'r') as f:
+            topic = f.read()
+        # check if user feedback exists in the file
+        if '## User feedback' not in topic:
+            print("no user feedback on the previous result")
+            exit()
+    else:
+        input_file = input_dir / "input.md"
+        with open(input_file, 'r') as f:
+            topic = f.read()
     print(f"Research starting on the topic: \n {topic}")
     inputs = {
         'topic': topic,

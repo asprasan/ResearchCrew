@@ -1,11 +1,46 @@
-from crewai import Agent, Crew, Process, Task
-from crewai.project import CrewBase, agent, crew, task
+import os
+from datetime import datetime
+from pathlib import Path
+from typing import Tuple, Any
+from crewai import (
+    Agent,
+    Crew,
+    Process,
+    Task,
+    TaskOutput
+)
+from crewai.project import (
+    CrewBase,
+    agent,
+    crew,
+    task,
+    before_kickoff
+)
 from crewai.agents.agent_builder.base_agent import BaseAgent
 
 from researchcrew.tools.ai_tools import exa_tool
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+
+def validate_report_content(result: TaskOutput) -> Tuple[bool, Any]:
+    # check if the report has the keywords summary, etc
+    report_str = result.raw
+    keywords_to_check = ['# Summary of the task',
+                         '# Clarifying questions to the user (if any)',
+                         '# Possible future direction of investigation (if any)']
+    if all(keyword in report_str for keyword in keywords_to_check):
+        return (True, 'Final report contains all necessary keywords')
+    else:
+        return (False, 'Final report does not contain all necessary keywords')
+
+def get_next_report_path() -> str:
+    output_dir = Path(os.environ['OUTPUT_DIR'])
+    year = str(datetime.now().year)
+    month = str(datetime.now().month)
+    day = str(datetime.now().day)
+    next_report_path = output_dir / f"{year}{int(month):02d}{int(day):02d}.md"
+    return str(next_report_path)
 
 @CrewBase
 class Researchcrew():
@@ -27,7 +62,7 @@ class Researchcrew():
             verbose=True,
             max_retry_limit=2,
         )
-    
+
     @agent
     def webscraper(self) -> Agent:
         return Agent(
@@ -76,7 +111,8 @@ class Researchcrew():
     def reporting_task(self) -> Task:
         return Task(
             config=self.tasks_config['reporting_task'], # type: ignore[index]
-            output_file='report.md'
+            output_file=get_next_report_path(),
+            guardrail=validate_report_content
         )
 
     @crew
