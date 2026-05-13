@@ -1,6 +1,16 @@
+research_planner_task:
+  description: >
+    Create a detailed research plan that outlines the steps needed to gather relevant information and insights based on the user's request and optionally previous research results as context and user feedback on the latest search results.
+  expected_output: >
+    A detailed research plan that includes the following sections:
+    1. Summary of the task: A brief overview of the user's request and the main objectives of the research.
+    2. An analysis of the user's request: A detailed breakdown of the user's request, including any specific requirements or constraints that need to be considered during the research process.
+    3. Creating a list of information that needs to be gathered: A comprehensive list of the types of information that need to be collected in order to address the user's request effectively.
+  agent: research_planner
+
 webcrawler_task:
   description: >
-    Find the most relevant URLs for the user's request. Make sure to exclude
+    Find the most relevant URLs based on the summary provided by the research_planner. Make sure to exclude
     websites with repetitive information and only consider freely accessible websites for scraping.
   expected_output: >
     A list of 5 URLs that are relevant to the user's request.
@@ -21,7 +31,11 @@ research_task:
     Summarize the information extracted by Webscraper and provide insights on the
     state of the market. Your summary will confirm to the user's request and provide insights on the state of the market.
     The current user's request is:
-    {topic}
+    The user's core task is {core_task}.
+
+    Context of the previous research results: {context}
+
+    User feedback on the latest search results: {current_feedback}
   expected_output: >
     The most relevant information extracted from each of the web pages.
   agent: researcher

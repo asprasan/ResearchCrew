@@ -7,14 +7,14 @@ from crewai import (
     Crew,
     Process,
     Task,
-    TaskOutput
+    TaskOutput,
+    LLM
 )
 from crewai.project import (
     CrewBase,
     agent,
     crew,
-    task,
-    before_kickoff
+    task
 )
 from crewai.agents.agent_builder.base_agent import BaseAgent
 
@@ -55,6 +55,14 @@ class Researchcrew():
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
+    def research_planner(self) -> Agent:
+        return Agent(
+            config=self.agents_config['research_planner'], # type: ignore[index]
+            verbose=True,
+            max_retry_limit=2,
+        )
+
+    @agent
     def web_crawler(self) -> Agent:
         return Agent(
             config=self.agents_config['web_crawler'], # type: ignore[index]
@@ -89,6 +97,12 @@ class Researchcrew():
     # To learn more about structured task outputs,
     # task dependencies, and task callbacks, check out the documentation:
     # https://docs.crewai.com/concepts/tasks#overview-of-a-task
+    @task
+    def reserach_planner_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['research_planner_task'], # type: ignore[index]
+        )
+
     @task
     def webcrawler_task(self) -> Task:
         return Task(

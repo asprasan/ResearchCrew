@@ -14,26 +14,36 @@ def run():
     """
     Run the crew.
     """
+    core_task = ''
+    context = ''
+    current_feedback = ''
     input_dir = Path(os.environ['INPUT_DIR'])
     output_dir = Path(os.environ['OUTPUT_DIR'])
-    # list and sort files
+    input_file = input_dir / "input.md"
+    with open(input_file, 'r') as f:
+        core_task = f.read()
+    
+    # get the context
     files=sorted(output_dir.glob("*.md"))
     if len(files) > 0:
-        with open(files[-1], 'r') as f:
-            topic = f.read()
-        # check if user feedback exists in the file
-        if '## User feedback' not in topic:
-            print("no user feedback on the previous result")
-            exit()
-    else:
-        input_file = input_dir / "input.md"
-        with open(input_file, 'r') as f:
-            topic = f.read()
-    print(f"Research starting on the topic: \n {topic}")
+        last_feedback_file = files[-1]
+        with open(last_feedback_file, 'r') as f:
+            current_feedback += f.read()
+            if '## User feedback' not in current_feedback:
+                print("no user feedback on the previous result")
+                exit()
+
+        for file in files[:-1]:
+            context += f'<context>Research from {file.name}</context>'
+            with open(files[-1], 'r') as f:
+                context += f.read()
+
+    print(f"Research starting on the topic: \n {core_task}")
     inputs = {
-        'topic': topic,
+        'core_task': core_task,
+        'context': context,
+        'current_feedback': current_feedback,
         'current_year': str(datetime.now().year),
-        'industry_type': "Food industry",
     }
 
     try:
