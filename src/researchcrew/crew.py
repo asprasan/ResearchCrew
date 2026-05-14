@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Tuple, Any
@@ -24,15 +25,23 @@ from researchcrew.tools.ai_tools import exa_tool
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
 
 def validate_report_content(result: TaskOutput) -> Tuple[bool, Any]:
-    # check if the report has the keywords summary, etc
-    report_str = result.raw
-    keywords_to_check = ['# Summary of the task',
-                         '# Clarifying questions to the user (if any)',
-                         '# Possible future direction of investigation (if any)']
-    if all(keyword in report_str for keyword in keywords_to_check):
+    # Normalize markdown and ignore case/punctuation for keyword matching.
+    normalized = re.sub(r'[^a-z0-9\s]', ' ', result.raw.lower())
+
+    keyword_groups = [
+        ['summary'],
+        ['clarifying questions', 'clarifying question'],
+        ['possible future direction', 'possible future directions', 'future direction', 'future directions'],
+    ]
+
+    missing = []
+    for group in keyword_groups:
+        if not any(keyword in normalized for keyword in group):
+            missing.append(group[0])
+
+    if not missing:
         return (True, 'Final report contains all necessary keywords')
-    else:
-        return (False, 'Final report does not contain all necessary keywords')
+    return (False, f'Missing keywords or sections: {", ".join(missing)}')
 
 def get_next_report_path() -> str:
     output_dir = Path(os.environ['OUTPUT_DIR'])
@@ -72,18 +81,18 @@ class Researchcrew():
         )
 
     @agent
-    def webscraper(self) -> Agent:
+    def content_extractor(self) -> Agent:
         return Agent(
-            config=self.agents_config['webscraper'], # type: ignore[index]
+            config=self.agents_config['content_extractor'], # type: ignore[index]
             tools=[exa_tool],
             verbose=True,
             max_retry_limit=2,
         )
 
     @agent
-    def researcher(self) -> Agent:
+    def synthesis_researcher(self) -> Agent:
         return Agent(
-            config=self.agents_config['researcher'], # type: ignore[index]
+            config=self.agents_config['synthesis_researcher'], # type: ignore[index]
             verbose=True,
         )
 
@@ -104,27 +113,23 @@ class Researchcrew():
         )
 
     @task
-    def webcrawler_task(self) -> Task:
+    def content_extractor_task(self) -> Task:
         return Task(
-            config=self.tasks_config['webcrawler_task'], # type: ignore[index]
+            config=self.tasks_config['content_extractor_task'], # type: ignore[index]
+            output_file=f"outputs/extraction_{datetime.now().strftime('%Y%m%d')}.json"
         )
     
     @task
-    def webscraper_task(self) -> Task:
+    def synthesis_researcher_task(self) -> Task:
         return Task(
-            config=self.tasks_config['webscraper_task'], # type: ignore[index]
-        )
-    
-    @task
-    def research_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
+            config=self.tasks_config['synthesis_researcher_task'], # type: ignore[index]
+            output_file=f"outputs/synthesis_{datetime.now().strftime('%Y%m%d')}.md"
         )
 
     @task
-    def reporting_task(self) -> Task:
+    def reporting_analyst_task(self) -> Task:
         return Task(
-            config=self.tasks_config['reporting_task'], # type: ignore[index]
+            config=self.tasks_config['reporting_analyst_task'], # type: ignore[index]
             output_file=get_next_report_path(),
             guardrail=validate_report_content
         )

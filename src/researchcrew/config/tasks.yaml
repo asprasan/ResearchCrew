@@ -1,53 +1,386 @@
 research_planner_task:
   description: >
-    Create a detailed research plan that outlines the steps needed to gather relevant information and insights based on the user's request and optionally previous research results as context and user feedback on the latest search results.
+    Analyze the user's research request, review the context of previous research, 
+    and identify what still needs to be researched.
+    
+    USER REQUEST:
+    Core task: {core_task}
+    
+    PREVIOUS RESEARCH (if any):
+    {context}
+    
+    USER FEEDBACK ON PREVIOUS RESULTS:
+    {current_feedback}
+    
+    YOUR JOB:
+    1. Extract all topics that were already researched from the context
+    2. Assess coverage level for each: comprehensive | partial | shallow
+    3. Identify gaps or new topics from the user feedback
+    4. List topics that should be SKIPPED (already covered) and why
+    5. For each topic that needs RESEARCH, specify 2-3 concrete search queries
+    
+    Format your output exactly as follows (this makes parsing easy for downstream agents):
+    
+    ## RESEARCH PLAN
+    
+    ### Topics Already Covered (SKIP THESE)
+    
+    - **Topic name**: [brief topic]
+      - Coverage: [comprehensive|partial|shallow]
+      - Sources found: [list 2-3 source URLs or domains from context]
+      - Reason to skip: [brief explanation]
+    
+    [Repeat for each covered topic]
+    
+    ### Topics Requiring Research (NEW/GAPS)
+    
+    - **Topic name**: [brief topic]
+      - Rationale: [why this is needed based on feedback or gaps]
+      - Search query 1: [specific, semantic search phrase—be precise]
+      - Search query 2: [alternative phrasing or complementary angle]
+      - Search query 3 (optional): [if additional depth is needed]
+    
+    [Repeat for each new/gap topic]
+    
+    ### Summary
+    
+    [1-2 sentences on overall research strategy]
+    
+    Remember: Be specific with search queries. Avoid vague terms. Example:
+    - BAD: "startup funding"
+    - GOOD: "European AI startup seed funding rounds 2024-2025"
+
   expected_output: >
-    A detailed research plan that includes the following sections:
-    1. Summary of the task: A brief overview of the user's request and the main objectives of the research.
-    2. An analysis of the user's request: A detailed breakdown of the user's request, including any specific requirements or constraints that need to be considered during the research process.
-    3. Creating a list of information that needs to be gathered: A comprehensive list of the types of information that need to be collected in order to address the user's request effectively.
+    A structured research plan with clear sections for:
+    1. Topics to SKIP (with sources and coverage level)
+    2. Topics to RESEARCH (with specific search queries)
+    3. Brief summary of overall strategy
+    
+    Format must be easily parseable by downstream agents.
+
   agent: research_planner
 
-webcrawler_task:
+
+web_crawler_task:
   description: >
-    Find the most relevant URLs based on the summary provided by the research_planner. Make sure to exclude
-    websites with repetitive information and only consider freely accessible websites for scraping.
+    Execute the research plan by finding authoritative URLs for each topic 
+    that requires research.
+    
+    INPUT FROM RESEARCH PLANNER:
+    [You will receive the research plan with topics and search queries]
+    
+    YOUR JOB:
+    1. For each topic in the "Topics Requiring Research" section:
+       - Execute search query 1 via EXASearch
+       - If results are strong, record the top 3-5 URLs
+       - If results are weak, try search query 2 as a fallback
+       - Apply quality filters: exclude low-signal domains (medium.com, reddit, 
+         twitter, quora, blogspot, wordpress), whitelist high-signal domains where possible
+    
+    2. Check the "Topics Already Covered" section:
+       - For each URL or domain listed there, mentally note it
+       - Do NOT search for the same topics again, even if they seem relevant
+       - This avoids redundant API calls
+    
+    3. For each URL found, record:
+       - Full URL
+       - Publication date (if available)
+       - Source type (academic | news | report | official documentation)
+       - Brief note on relevance (1-2 sentences explaining why this URL is relevant)
+    
+    4. If you find NO suitable sources for a topic after 2-3 searches:
+       - Explicitly state: "No suitable sources found for: [topic]"
+       - Suggest a rephrasing of the search query for human review
+    
+    Format your output exactly as follows:
+    
+    ## WEB CRAWLER RESULTS
+    
+    ### Topic: [Name from research plan]
+    
+    **Search queries executed**: [List the queries you ran]
+    
+    **URLs found**:
+    
+    1. URL: [full URL]
+       - Publication date: [YYYY-MM-DD or "unknown"]
+       - Source type: [academic|news|report|official]
+       - Relevance: [1-2 sentences on why this is relevant to the topic]
+    
+    2. URL: [full URL]
+       - Publication date: [YYYY-MM-DD or "unknown"]
+       - Source type: [academic|news|report|official]
+       - Relevance: [1-2 sentences]
+    
+    [Repeat for each URL]
+    
+    ### Topic: [Next topic]
+    
+    [Repeat structure]
+    
+    ### Topics Skipped (from research plan)
+    
+    [List 2-3 example topics that were skipped, with the reason]
+    
+    Remember: Do not invent URLs. If you cannot find 3+ suitable URLs for a topic 
+    after 2 searches, report "No suitable sources found" rather than listing low-quality fallbacks.
+
   expected_output: >
-    A list of 5 URLs that are relevant to the user's request.
+    Structured list of URLs organized by topic, with publication dates, source types, 
+    and relevance notes. Include explicit "No suitable sources found" statements where applicable.
+
   agent: web_crawler
 
-webscraper_task:
+
+content_extractor_task:
   description: >
-    Extract the important information from the URLs provided by Web_crawler. 
-    Make sure to understand the user's request and extract 
-    the most relevant information from the web pages.
-  expected_output: >
-    For each URL provided by Web_crawler, extract the most relevant information that confirms to the user's request.
-    The output should be a json object with keys 'url' and 'extracted_information'.
-  agent: webscraper
+    Extract verifiable claims from each URL provided by web_crawler.
+    
+    INPUT FROM WEB CRAWLER:
+    [You will receive a list of URLs organized by topic]
+    
+    USER'S CORE TASK (for context when extracting):
+    {core_task}
+    
+    YOUR JOB:
+    For EACH URL:
+    1. Use web_fetch (or similar content-retrieval tool) to retrieve the full page content
+    2. Read through the content carefully
+    3. Identify specific claims or facts that address the research task
+    4. For EACH claim, extract:
+       - claim: A single, clear factual statement (1 sentence)
+       - supporting_quote: A direct, verbatim quote from the source (max 20 words)
+       - location: Where this claim appears (section name, heading, or paragraph context)
+       - confidence: "high" (clearly stated, verifiable) | "medium" (reasonably clear) | "low" (inferred or unclear)
+    5. Record metadata:
+       - url: The full URL
+       - title: The page title or main heading
+       - publication_date: YYYY-MM-DD format, or null if unavailable
+       - source_type: The type from web_crawler (academic|news|report|official)
+       - topics_addressed: Which topics from the research plan this URL covers
+    
+    CRITICAL RULES (non-negotiable):
+    - NEVER invent supporting quotes. If you cannot find a direct quote in the source, mark confidence as "low"
+    - NEVER add your own analysis or interpretation
+    - NEVER make up publication dates or source details
+    - If a URL is inaccessible (404, paywall, etc.), include it in output with a note explaining why
+    - If a URL is too short or empty to extract useful claims, report this explicitly
+    - Every claim MUST be traceable to a specific location in the source
+    
+    Output as VALID JSON (no markdown, no code fences, no preamble):
+    
+    {
+      "extractions": [
+        {
+          "url": "https://example.com/article",
+          "title": "Article Title or Main Heading",
+          "publication_date": "2024-05-15",
+          "source_type": "news|academic|report|official",
+          "topics_addressed": ["topic1", "topic2"],
+          "claims": [
+            {
+              "claim": "One clear factual statement about the topic.",
+              "supporting_quote": "Direct excerpt from source, max 20 words",
+              "location": "Section: Introduction, Paragraph 2",
+              "confidence": "high|medium|low"
+            },
+            {
+              "claim": "Another claim from this source.",
+              "supporting_quote": "Another direct quote",
+              "location": "Section: Market Analysis, Figure 3 caption",
+              "confidence": "high"
+            }
+          ],
+          "notes": "Any issues encountered (inaccessible, too short, etc.) or additional context"
+        },
+        {
+          "url": "https://example.com/report",
+          "title": "Report Title",
+          "publication_date": null,
+          "source_type": "report",
+          "topics_addressed": ["topic2"],
+          "claims": [
+            {
+              "claim": "A finding from this report.",
+              "supporting_quote": "Supporting quote",
+              "location": "Page 5, Executive Summary",
+              "confidence": "high"
+            }
+          ],
+          "notes": null
+        }
+      ]
+    }
+    
+    Ensure the JSON is valid and can be parsed by downstream agents.
 
-research_task:
+  expected_output: >
+    A valid JSON object with all extractions. Each extraction preserves:
+    - The original URL and metadata
+    - A list of claims with supporting quotes, locations, and confidence levels
+    - Notes on any issues encountered
+    
+    This JSON becomes the input to synthesis_researcher_task.
+
+  agent: content_extractor
+
+
+synthesis_researcher_task:
   description: >
-    Summarize the information extracted by Webscraper and provide insights on the
-    state of the market. Your summary will confirm to the user's request and provide insights on the state of the market.
-    The current user's request is:
-    The user's core task is {core_task}.
+    Synthesize the extracted claims into coherent, evidence-based findings.
+    
+    INPUT FROM CONTENT EXTRACTOR:
+    [You will receive a JSON object with structured claims from multiple URLs]
+    
+    USER'S CORE TASK (for context):
+    {core_task}
+    
+    CONTEXT OF PREVIOUS RESEARCH:
+    {context}
+    
+    USER FEEDBACK:
+    {current_feedback}
+    
+    YOUR JOB:
+    1. Parse the extraction JSON and organize claims by topic
+    2. For each topic, group related claims and identify:
+       - Patterns or convergences across sources (e.g., "3 sources agree that...")
+       - Contradictions or conflicting claims (flag which sources disagree)
+       - Trend analysis (e.g., "funding increased 40% YoY based on sources X, Y, Z")
+    3. Provide analysis or insights that emerge from the evidence
+    4. For EVERY insight or analysis point, cite which URL(s) support it
+    5. Preserve confidence levels: flag low-confidence claims so analyst knows to treat them cautiously
+    
+    CRITICAL CONSTRAINT:
+    You may ONLY synthesize from the claims provided in the extraction input.
+    You CANNOT add new claims, cite sources not provided, or speculate beyond the evidence.
+    
+    Format your output in markdown:
+    
+    # Synthesis of Research Findings
+    
+    ## [Topic 1 Name]
+    
+    ### Extracted Claims
+    
+    - **Claim A**: [The exact claim from extraction]
+      - Source: [URL]
+      - Supporting quote: "[quote]"
+      - Confidence: [high|medium|low]
+    
+    - **Claim B**: [Another claim]
+      - Source: [URL]
+      - Supporting quote: "[quote]"
+      - Confidence: [high|medium|low]
+    
+    ### Patterns & Insights
+    
+    **Pattern 1**: [What the claims suggest when grouped together]
+    - Supporting sources: [URL1, URL2, URL3]
+    - Analysis: [Your interpretation of what this pattern means]
+    
+    **Pattern 2**: [Another pattern or trend]
+    - Supporting sources: [URL list]
+    - Analysis: [Interpretation]
+    
+    ### Contradictions (if any)
+    
+    - [URL1] claims X, but [URL2] claims Y
+      - Source 1 context: [Why they claim X]
+      - Source 2 context: [Why they claim Y]
+      - Assessment: [Which is more credible or why they might disagree]
+    
+    ## [Topic 2 Name]
+    
+    [Repeat structure]
+    
+    ## Gaps or Low-Confidence Areas
+    
+    [Note any topics where extraction was thin, contradictory, or low-confidence. 
+     Suggest follow-up research if needed.]
+    
+    Remember: Every insight you provide MUST be tied to evidence from the extraction JSON.
+    You are synthesizing, not speculating.
 
-    Context of the previous research results: {context}
-
-    User feedback on the latest search results: {current_feedback}
   expected_output: >
-    The most relevant information extracted from each of the web pages.
-  agent: researcher
+    Markdown document with synthesized findings organized by topic. Each finding 
+    includes:
+    - The original claims with source URLs
+    - Patterns and insights with supporting sources cited
+    - Any contradictions flagged with assessment
+    - Notes on gaps or areas needing follow-up
+    
+    This becomes the input to reporting_analyst_task.
 
-reporting_task:
+  agent: synthesis_researcher
+
+
+reporting_analyst_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Write a publication-ready markdown report based on synthesis_researcher's findings.
+    
+    INPUT FROM SYNTHESIS RESEARCHER:
+    [You will receive a markdown document with synthesized findings and citations]
+    
+    YOUR JOB:
+    1. Organize the findings into a coherent, well-structured report
+    2. Write narrative prose for each section that integrates the findings
+    3. For every claim or insight, include a direct citation: [claim or finding](URL)
+    4. Preserve URLs and source context from the synthesis input
+    5. If synthesis input is insufficient for a section, explicitly state: "Insufficient data for this section"
+    
+    CRITICAL CONSTRAINT:
+    You may ONLY cite URLs that appear in the synthesis_researcher's input.
+    You CANNOT invent new URLs, add new claims, or speculate beyond what was synthesized.
+    
+    Output format (markdown, no code fences):
+    
+    # [Report Title based on core task]
+    
+    ## Summary of Task
+    
+    {core_task}
+    
+    ## Executive Summary
+    
+    [1-2 paragraph summary of key findings and insights from the synthesis]
+    
+    ## [Topic 1]
+    
+    [Narrative paragraph(s) integrating the claims and insights for this topic. 
+     Include citations like "According to [finding](URL)" or "[finding](URL) shows that..."]
+    
+    [More paragraphs as needed for depth and clarity]
+    
+    ## [Topic 2]
+    
+    [Repeat structure]
+    
+    ## Clarifying Questions for the User (if any)
+    
+    [Based on gaps or thin evidence in the research, list 1-3 questions that would 
+     help improve future research. Leave blank if not applicable.]
+    
+    ## Possible Future Directions of Investigation (if any)
+    
+    [Based on the findings, suggest 1-3 follow-up research directions. 
+     Example: "Investigate European startup funding regulations" or "Analyze long-term ROI trends"]
+    
+    ## Sources Cited
+    
+    [Bullet list of all unique URLs cited in the report, in order of appearance]
+    
+    Remember: This report is only as credible as its citations. Every claim must 
+    be traceable to a URL. Do not add unsourced claims.
+
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    The report should contain cite the URLs when there are non-trivial information that is extracted from the web pages.
-    Formatted as markdown without '```'.
-    The output should contain the sections titled 'Summary of the task', 'Clarifying questions to the user (if any)',
-    'Possible future direction of investigation (if any)'
+    Markdown report with:
+    - Clear sections organized by topic
+    - Narrative prose with in-text citations [finding](URL)
+    - Executive summary, clarifying questions, and future directions
+    - A sources list at the end
+    - Every claim traceable back to an original source URL
+    
+    The report is publication-ready and fully cited.
+
   agent: reporting_analyst
