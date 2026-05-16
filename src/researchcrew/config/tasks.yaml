@@ -373,6 +373,10 @@ reporting_analyst_task:
     Remember: This report is only as credible as its citations. Every claim must 
     be traceable to a URL. Do not add unsourced claims.
 
+    ## User Feedback
+    
+    [Leave this section empty with just the heading. User will fill this in after reading the report.]
+
   expected_output: >
     Markdown report with:
     - Clear sections organized by topic

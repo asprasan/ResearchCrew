@@ -9,7 +9,8 @@ from crewai import (
     Process,
     Task,
     TaskOutput,
-    LLM
+    LLM,
+    Memory
 )
 from crewai.project import (
     CrewBase,
@@ -51,6 +52,11 @@ def get_next_report_path() -> str:
     next_report_path = output_dir / f"{year}{int(month):02d}{int(day):02d}.md"
     return str(next_report_path)
 
+openrouter_llm = LLM(model=os.environ['OPENROUTER_MODEL_NAME'],
+                     api_key=os.environ['OPENROUTER_API_KEY'],
+                     base_url=os.environ['OPENROUTER_API_BASE'],
+                     )
+
 @CrewBase
 class Researchcrew():
     """Researchcrew crew"""
@@ -67,8 +73,9 @@ class Researchcrew():
     def research_planner(self) -> Agent:
         return Agent(
             config=self.agents_config['research_planner'], # type: ignore[index]
-            verbose=True,
+            verbose=False,
             max_retry_limit=2,
+            llm=openrouter_llm
         )
 
     @agent
@@ -76,8 +83,9 @@ class Researchcrew():
         return Agent(
             config=self.agents_config['web_crawler'], # type: ignore[index]
             tools=[exa_tool],
-            verbose=True,
+            verbose=False,
             max_retry_limit=2,
+            llm=openrouter_llm
         )
 
     @agent
@@ -85,22 +93,25 @@ class Researchcrew():
         return Agent(
             config=self.agents_config['content_extractor'], # type: ignore[index]
             tools=[exa_tool],
-            verbose=True,
+            verbose=False,
             max_retry_limit=2,
+            llm=openrouter_llm
         )
 
     @agent
     def synthesis_researcher(self) -> Agent:
         return Agent(
             config=self.agents_config['synthesis_researcher'], # type: ignore[index]
-            verbose=True,
+            verbose=False,
+            llm=openrouter_llm
         )
 
     @agent
     def reporting_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config['reporting_analyst'], # type: ignore[index]
-            verbose=True
+            verbose=False,
+            llm=openrouter_llm
         )
 
     # To learn more about structured task outputs,
@@ -116,14 +127,14 @@ class Researchcrew():
     def content_extractor_task(self) -> Task:
         return Task(
             config=self.tasks_config['content_extractor_task'], # type: ignore[index]
-            output_file=f"outputs/extraction_{datetime.now().strftime('%Y%m%d')}.json"
+            output_file=f"outputs/syns/extraction_{datetime.now().strftime('%Y%m%d')}.json"
         )
     
     @task
     def synthesis_researcher_task(self) -> Task:
         return Task(
             config=self.tasks_config['synthesis_researcher_task'], # type: ignore[index]
-            output_file=f"outputs/synthesis_{datetime.now().strftime('%Y%m%d')}.md"
+            output_file=f"outputs/syns/synthesis_{datetime.now().strftime('%Y%m%d')}.md"
         )
 
     @task
@@ -145,12 +156,22 @@ class Researchcrew():
             tasks=self.tasks, # Automatically created by the @task decorator
             process=Process.sequential,
             verbose=True,
-            embedder={
-                "provider": "google-generativeai",
-                "config": {
-                    "model": "gemini-embedding-001",
-                    }
-                    },
-            memory=True,
+            memory=Memory(
+                        storage='lancedb',
+                        embedder={
+                        "provider": "google-generativeai",
+                        "config": {
+                            "model": "gemini-embedding-001",
+                            "api_key": os.getenv("GOOGLE_API_KEY")
+                            }
+                            },
+                        llm=LLM(model='openrouter/openai/gpt-oss-20b:free',
+                                api_key=os.environ['OPENROUTER_API_KEY'],
+                                base_url=os.environ['OPENROUTER_API_BASE'],
+                                temperature=0,
+                                response_format={"type": "json_object"},
+                                ),
+                    ),
+            llm=openrouter_llm,
             # process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
         )

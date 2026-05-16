@@ -29,7 +29,7 @@ def run():
         last_feedback_file = files[-1]
         with open(last_feedback_file, 'r') as f:
             current_feedback += f.read()
-            if '## User feedback' not in current_feedback:
+            if 'feedback' not in current_feedback.lower():
                 print("no user feedback on the previous result")
                 exit()
 
