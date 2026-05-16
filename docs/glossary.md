@@ -132,7 +132,7 @@ The system's ability to retain information across research runs. ResearchCrew us
 - **Long-term memory:** Stores research outputs and sources via LanceDB
 - **Conversation memory:** Maintains context within a single run
 
-Memory is enabled by default. See also: [Knowledge Base](#knowledge-base).
+Memory is enabled by default. See also: [Knowledge Base](#k).
 
 ## O
 
@@ -185,7 +185,7 @@ Degree to which research output can be trusted. ResearchCrew prioritizes reliabi
 - Explicit gap flagging ("Insufficient data" labels)
 
 **Report**
-The final research output. See [Output](#output).
+The final research output. See [Output](#o).
 
 ## S
 
@@ -202,7 +202,7 @@ The process of combining information from multiple sources into coherent finding
 - Flags contradictions
 - Preserves source attribution
 
-See also: [Synthesis Researcher](#synthesis-researcher).
+See also: [Synthesis Researcher](#s).
 
 ## T
 

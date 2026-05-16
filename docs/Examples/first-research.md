@@ -47,7 +47,7 @@ Expected runtime: 5-15 minutes depending on LLM and search scope.
 
 Output:
 
-```
+```txt
 Starting ResearchCrew pipeline...
 
 ✓ Research Planner: Analyzed topic, identified research plan

@@ -104,7 +104,7 @@ Example:
 
 **Solution:** The synthesis researcher identifies patterns across multiple sources:
 
-```
+```txt
 Finding: "AI diagnostic accuracy is 95%"
 Validation:
 - Source A (Medical Journal): "95% accuracy"
@@ -116,7 +116,7 @@ Synthesis: "Multiple sources report 93-97% accuracy. Average: 95%."
 
 Contradictions are flagged:
 
-```
+```txt
 Finding: "AI adoption in healthcare is widespread"
 Validation:
 - Source A: "80% of hospitals use some form of AI"
