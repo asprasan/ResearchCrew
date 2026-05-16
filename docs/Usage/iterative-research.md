@@ -295,5 +295,5 @@ The report includes full citations, so others can:
 ## Next Steps
 
 - **[Configuration](configuration.md)** — Optimize LLM choices and performance
-- **[Examples](../examples/)** — See full multi-round workflow examples
+- **[Examples](../examples/index.md)** — See full multi-round workflow examples
 - **[Architecture](../architecture.md)** — Understand how feedback is incorporated

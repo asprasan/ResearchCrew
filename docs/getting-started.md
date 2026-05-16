@@ -130,10 +130,10 @@ The crew will see your feedback, remember previous research, and iterate accordi
 
 ## Next Steps
 
-- **[Architecture](../architecture.md)** — Understand the 5-agent pipeline
-- **[Usage Guide](../usage/)** — Single-round and multi-round workflows
-- **[Features](../features/)** — Learn about reliability checks and citations
-- **[Examples](../examples/)** — See complete research walkthroughs
+- **[Architecture](architecture.md)** — Understand the 5-agent pipeline
+- **[Usage Guide](usage/index.md)** — Single-round and multi-round workflows
+- **[Features](features/index.md)** — Learn about reliability checks and citations
+- **[Examples](examples/index.md)** — See complete research walkthroughs
 
 ## Troubleshooting
 

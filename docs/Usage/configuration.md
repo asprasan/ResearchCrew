@@ -328,4 +328,4 @@ python -c "import os; print(os.getenv('OPENROUTER_API_KEY'))"
 ## Next Steps
 
 - **[Usage Guide](basic-workflow.md)** — Single and multi-round workflows
-- **[Examples](../examples/)** — See real research examples
+- **[Examples](../examples/index.md)** — See real research examples

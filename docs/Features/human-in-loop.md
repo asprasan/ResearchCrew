@@ -297,5 +297,5 @@ From Carol:
 ## Next Steps
 
 - **[Iterative Research Workflow](../usage/iterative-research.md)** — Step-by-step guide
-- **[Examples](../examples/)** — Real multi-round research examples
+- **[Examples](../examples/index.md)** — Real multi-round research examples
 - **[Reliability Features](reliability.md)** — Quality checks throughout pipeline

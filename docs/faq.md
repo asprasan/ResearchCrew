@@ -433,6 +433,6 @@ Didn't find answer? Check:
 
 - **[Getting Started](getting-started.md)** — Setup and first run
 - **[Architecture](architecture.md)** — How it works
-- **[Usage Guides](usage/)** — Single-round and iterative workflows
-- **[Features](features/)** — Detailed feature documentation
-- **[Examples](examples/)** — Real research walkthroughs
+- **[Usage Guides](usage/index.md)** — Single-round and iterative workflows
+- **[Features](features/index.md)** — Detailed feature documentation
+- **[Examples](examples/index.md)** — Real research walkthroughs
