@@ -1,76 +1,112 @@
-# Researchcrew Crew
+# ResearchCrew
 
-Welcome to the Researchcrew project, powered by [crewAI](https://crewai.com). 
+**AI-powered research with human guidance and citation integrity.**
 
-The goal of this project is to provide a multi-agent system that can perform complex research tasks, leveraging the capabilities of various AI agents working together, with a human in the loop that guides the process.
+ResearchCrew is a multi-agent research system that conducts thorough, well-sourced investigations with active human steering. Unlike generic AI summaries, every claim is traceable to a source URL, and every research round is guided by human feedback.
 
+## What Makes ResearchCrew Different
 
-## Installation
+- **Human-Guided Research** — After each round, you review findings and steer the crew toward specific topics. The system learns your feedback and refines accordingly.
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+- **Citation Integrity** — Every claim includes direct source attribution. No hallucinations, no invented quotes. Full traceability from source to final report.
 
-First, if you haven't already, install uv:
+- **Reliability Filters** — The web crawler avoids unreliable sources, and multiple pipeline checks validate findings at each stage (extraction, synthesis, reporting).
 
-```bash
-pip install uv
+- **Persistent Memory** — The crew remembers past research and feedback across multiple runs, avoiding redundant work and building context.
+
+## Quick Start
+
+### Prerequisites
+
+- Python ≥3.10 < 3.14
+- [UV](https://docs.astral.sh/uv/) package manager
+
+### Setup (5 minutes)
+
+1. **Install UV:**
+
+   ```bash
+   pip install uv
+   ```
+
+2. **Clone and install dependencies:**
+
+   ```bash
+   git clone <repo>
+   cd researchcrew
+   crewai install
+   ```
+
+3. **Configure environment:**
+
+   ```bash
+   cp .env.example .env
+   # Edit .env with your LLM API keys
+   ```
+
+4. **Run your first research:**
+
+   ```bash
+   crewai run
+   ```
+
+   Output: `report.md` in the root folder with your research findings.
+
+## How It Works
+
+ResearchCrew executes a 5-stage research pipeline:
+
+1. **Research Planner** — Analyzes your topic, identifies research gaps, creates search strategy
+2. **Web Crawler** — Finds authoritative URLs using semantic search (EXASearch)
+3. **Content Extractor** — Retrieves page content and extracts verifiable claims with confidence levels
+4. **Synthesis Researcher** — Groups claims by theme, identifies patterns, flags contradictions
+5. **Reporting Analyst** — Writes publication-ready markdown with [claim](URL) citations
+
+## The Human-in-the-Loop Workflow
+
+```md
+Research Topic
+    ↓
+[Crew runs 5-stage pipeline]
+    ↓
+Review Report + Findings
+    ↓
+Provide Feedback (explore topic X deeper, ignore topic Y, etc.)
+    ↓
+[Crew iterates with feedback context]
+    ↓
+Refined Report
+    ↓
+Provide Feedback (explore topic X deeper, ignore topic Y, etc.)
+    ↓
+[Crew iterates with feedback context]
+    ↓
+  ...
 ```
 
-Next, navigate to your project directory and install the dependencies:
+Each iteration refines the research based on your guidance. The crew remembers prior findings to avoid redundant searching.
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
-```
+## Configuration
 
-### Setting up Environment Variables
+**Environment variables** (`.env` file):
 
-The crew and the agents need an LLM to operate. You can use any LLM supported by crewAI. 
+- `OPENROUTER_MODEL_NAME` — LLM to use (e.g., `gemini-3-flash`, `gpt-4o-mini`, etc)
+- `OPENROUTER_API_KEY` — Your API key
+- Other provider-specific keys as needed
 
-As of now, we use a single LLM for all the tasks. In the future, we may choose to use different LLMs for tasks of different complexity.
+See `.env.example` for full configuration.
 
-```bash
-cp .env.example .env
-```
+## Learn More
 
-Then, edit the `.env` file and add your API keys.
+- **[Getting Started Guide](docs/getting-started.md)** — Detailed setup and first run
+- **[Architecture & Design](docs/architecture.md)** — How the 5-agent pipeline works
+- **[Usage Guide](docs/usage/)** — Single-round and multi-round workflows
+- **[Features](docs/features/)** — Human-in-loop workflow, reliability checks, citations
+- **[Examples](docs/examples/)** — Complete research walkthroughs
+- **[FAQ](docs/faq.md)** — Common questions and troubleshooting
 
-## Running the Project
+## Project Philosophy
 
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+**Research integrity over speed.** Every finding must be verifiable. Every source must be reliable. Every iteration should be guided by human judgment.
 
-```bash
-crewai run
-```
-
-This command initializes the ResearchCrew Crew, assembling the agents and assigning them tasks as defined in your configuration.
-
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
-
-## Crew workflow
-
-This crew is designed to perform research tasks. The workflow is as follows:
-
-1. The crew receives a research question or topic to investigate.
-2. The crew itself consists of an agentic flow. The flow is directed as follows:
-   - The first task is a web-crawler task that searches the web for relevant information on the topic
-   - The next task is to scrape the content of the links found by the web-crawler
-   - Then, a research assistant agent reads the scraped content and extracts the relevant information
-   - Finally, a report writer agent takes the extracted information and writes a report in markdown format.
-3. A final report is generated and saved as `report.md` in the root folder.
-4. The user then reviews the report and can provide feedback to the crew for further refinement or additional research.
-5. Based on the feedback, the crew can iterate on the research process, refining the report or exploring additional sources as needed.
-
-## Design choices
-
-The defining feature of this crew is that there is a human in the loop that guides the research process. The research isn't complete within a single run of the crew. Instead, the crew produces a report that is then reviewed by the user, who can provide feedback for further refinement. This iterative process allows for a more thorough and accurate research outcome.
-
-### Research crew needs to remember the core task and the research completed so far
-
-User provides feedback after each run. However, the crew needs to remember the core task and the research completed so far in order to effectively incorporate the user's feedback and continue refining the report.
-
-- Option 1: Set `memory=True` for the Crew. CrewAI stores long-term memory into a SQLite database. This long-term memory consists of the past outputs and can be queried when running subsequent iterations of the Crew
-  - Feasibility: This is feasible as we let CrewAI decide what to remember. It can also cache some of the webpages crawled and scraped by the EXASearch tool.
-- Option 2: Read all the previously generated reports and the input core-task provided by the user provide it as a context to the Crew.
-  - Feasibility: Since the reports generated and the input task are all formatted as markdown, we can quite easily provide the raw information as context. This doesn't exceed the context limit of the LLMs which are usually around 250k - 1M tokens.
-
-### Links need to be properly attributed in the final report
+This crew is built for researchers, analysts, and teams who need thorough, transparent, well-sourced research outputs.
