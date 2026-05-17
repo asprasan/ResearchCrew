@@ -303,7 +303,7 @@ ResearchCrew uses markdown inline citations. This format:
 
 Could be extended to:
 
-- [x] Markdown inline citations (current)
+- [ ] Markdown inline citations (current)
 - [ ] Footnotes with bibliography
 - [ ] BibTeX entries
 - [ ] APA/MLA/Chicago style

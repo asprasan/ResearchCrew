@@ -14,15 +14,15 @@ Ensure `.env` is configured:
 
 ```env
 OPENROUTER_API_KEY=sk-your-key
-OPENROUTER_MODEL_NAME=openai/gpt-4-turbo
+OPENROUTER_MODEL_NAME=openrouter/openai/gpt-4o-mini
 EXA_API_KEY=your-exa-key
 ```
 
 ## Step 2: Create Research Topic
 
-Create `input.md` in the project root:
+Create `input.md` in the `inputs/` directory with the following content:
 
-```markdown
+```md
 # Research Topic: AI Governance in 2025
 
 Please research the current state of AI governance and regulation globally.
@@ -57,18 +57,15 @@ Starting ResearchCrew pipeline...
 ✓ Reporting Analyst: Generated publication-ready report
 
 Output files created:
-- report.md (main report)
-- 20250516_143000_extraction.json (extracted claims)
-- 20250516_143000_synthesis.md (synthesis findings)
+- <yyyymmdd>.md (main report)
 ```
 
 ## Step 4: Review Initial Report
 
-Open `report.md`. You'll see something like:
+Open `<yyyymmdd>.md`. You'll see something like:
 
-```markdown
+```md
 # AI Governance Research Report
-*Generated: 2025-05-16*
 
 ## Executive Summary
 
@@ -142,10 +139,10 @@ vs. formal government regulation. Comparative analysis is limited.
 
 ## Step 6: Provide Feedback for Iteration
 
-Edit the end of `report.md` and add:
+Edit the end of `<yyyymmdd>.md` and add:
 
 ```markdown
-## User Feedback - Round 2
+## User Feedback
 
 ### Please Explore More:
 
@@ -189,13 +186,12 @@ The crew will:
 2. See your feedback about gaps (international, costs, enforcement)
 3. Search specifically for those topics
 4. Integrate new findings with prior research
-5. Update `report.md`
+5. Create a new report with the additional information
 
 Updated report now includes:
 
 ```markdown
-# AI Governance Research Report (Updated)
-*Generated: 2025-05-16 (Round 2)*
+# AI Governance Research Report
 
 ## [Previous sections unchanged - covering EU, US, industry self-regulation]
 
@@ -282,22 +278,6 @@ The updated report now covers:
 - You need even deeper dive into specific countries
 - You want policy recommendations
 - You're writing a detailed compliance guide
-
-## Step 9: Export & Use
-
-Copy the report:
-
-```bash
-cp report.md AI_Governance_Research_2025_05_16.md
-```
-
-Now you can:
-
-- Share with colleagues
-- Include in presentations
-- Cite in your own writing
-- Archive for future reference
-- Update with feedback if regulations change
 
 ## What Made This Research Effective
 

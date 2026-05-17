@@ -27,41 +27,41 @@ Choose your LLM based on quality vs. cost tradeoff.
 ### Fast Research (Cost-Optimized)
 
 ```env
-OPENROUTER_MODEL_NAME=openai/gpt-3.5-turbo
+OPENROUTER_MODEL_NAME=openrouter/openai/gpt-4o-mini
 ```
 
 - **Speed:** Fast pipeline execution
-- **Cost:** Lowest ($0.50-1.00 per run)
+- **Cost:** Lowest
 - **Quality:** Good for initial exploration, may have more hallucinations
 - **Best for:** Quick research, exploratory passes
 
 ### Balanced Research
 
 ```env
-OPENROUTER_MODEL_NAME=openai/gpt-4-turbo
-```
+OPENROUTER_MODEL_NAME=openrouter/openai/gpt-4o
 
 - **Speed:** Moderate
-- **Cost:** Medium ($2-5 per run)
+- **Cost:** Medium
 - **Quality:** Reliable, good citation accuracy
 - **Best for:** Most production research
+```
 
 ### High-Accuracy Research
 
 ```env
-OPENROUTER_MODEL_NAME=anthropic/claude-3-opus
+OPENROUTER_MODEL_NAME=openrouter/anthropic/claude-3-opus
 ```
 
 - **Speed:** Slower
-- **Cost:** Higher ($5-10 per run)
+- **Cost:** Higher
 - **Quality:** Excellent, minimal hallucinations
 - **Best for:** Critical research, high-stakes decisions
 
 ### Cutting-Edge Models
 
 ```env
-OPENROUTER_MODEL_NAME=openai/gpt-4o  # Latest GPT-4 Omni
-OPENROUTER_MODEL_NAME=anthropic/claude-3.5-sonnet  # Latest Claude
+OPENROUTER_MODEL_NAME=openrouter/openai/gpt-4o  # Latest GPT-4 Omni
+OPENROUTER_MODEL_NAME=openrouter/anthropic/claude-3.5-sonnet  # Latest Claude
 ```
 
 - **Speed:** Varies
@@ -70,6 +70,7 @@ OPENROUTER_MODEL_NAME=anthropic/claude-3.5-sonnet  # Latest Claude
 - **Best for:** Maximum quality requirements
 
 **Find more models:** [OpenRouter models list](https://openrouter.ai/models)
+**Free models:** [OpenRouter free models](https://openrouter.ai/collections/free-models)
 
 ## Memory Configuration
 
@@ -105,18 +106,6 @@ def crew(self) -> Crew:
 - Avoids re-crawling same sources
 - Provides context for iterative research
 - Improves subsequent run quality
-
-### Memory Database
-
-Memory uses LanceDB (local vector database). Data is stored in:
-
-```
-.crew_cache/
-├── lancedb/          # Vector store
-└── crew_state/       # Agent state
-```
-
-No external database needed.
 
 ## Web Search Configuration
 
@@ -162,12 +151,13 @@ By default, reports are saved to:
 
 ```
 researchcrew/
-├── report.md              # Final report
-├── [timestamp]_extraction.json
-└── [timestamp]_synthesis.md
+├── outputs/
+│   ├── 20250516.md # initial report
+|   ├── 20250517.md # subsequent report (if running multiple rounds)
+|   └── ...
 ```
 
-To change output directory, modify in `main.py`:
+To change output directory, modify in `.env`:
 
 ```python
 OUTPUT_DIR = "my_research_output"  # Change this path
@@ -175,16 +165,7 @@ OUTPUT_DIR = "my_research_output"  # Change this path
 
 ### Report Format
 
-Reports are generated in markdown. The format is fixed (publication-ready), but you can customize via task descriptions in `tasks.yaml`.
-
-### Timestamp Format
-
-Intermediate files use `YYYYMMDD_HHmmss` format:
-
-```
-20250516_143000_extraction.json
-20250516_143000_synthesis.md
-```
+Reports are generated in markdown and saved into `outputs/[yyyymmdd].md`. The format is fixed (publication-ready), but you can customize via task descriptions in `tasks.yaml`.
 
 ## Agent Customization
 
@@ -229,7 +210,7 @@ research_planner_task:
 1. **Use faster LLM:**
 
    ```env
-   OPENROUTER_MODEL_NAME=openai/gpt-3.5-turbo
+   OPENROUTER_MODEL_NAME=openrouter/openai/gpt-4o-mini
    ```
 
 2. **Reduce search scope** (in tasks.yaml):
@@ -240,14 +221,12 @@ research_planner_task:
        Find 2-3 high-quality URLs per search query (reduced from 5)
    ```
 
-3. **Skip intermediate files** — Disable synthesis output if not needed
-
 ### Better Quality
 
 1. **Use better LLM:**
 
    ```env
-   OPENROUTER_MODEL_NAME=anthropic/claude-3-opus
+   OPENROUTER_MODEL_NAME=openrouter/anthropic/claude-3-opus
    ```
 
 2. **Increase search depth** — Find more URLs per query
@@ -269,21 +248,6 @@ def crew(self) -> Crew:
     )
 ```
 
-### Check .env
-
-Verify your `.env` has required keys:
-
-```bash
-echo $OPENROUTER_API_KEY
-echo $EXA_API_KEY
-```
-
-### Test API Keys
-
-```bash
-python -c "import os; print(os.getenv('OPENROUTER_API_KEY'))"
-```
-
 ## Common Configuration Issues
 
 - **"API key is invalid"**
@@ -297,12 +261,6 @@ python -c "import os; print(os.getenv('OPENROUTER_API_KEY'))"
   - Reinstall: `crewai install`
   - Or: `pip install crewai`
 
-- **"LanceDB connection failed"**
-
-  - Ensure `.crew_cache/` directory exists
-  - Check disk space
-  - Verify write permissions
-
 - **"Rate limited by API"**
 
   - Too many requests too quickly
@@ -313,7 +271,7 @@ python -c "import os; print(os.getenv('OPENROUTER_API_KEY'))"
 
 - **Do:**
 
-  - Start with GPT-3.5-turbo (cheaper initial testing)
+  - Start with GPT-4o-mini (cheaper initial testing)
   - Switch to Claude 3 Opus for production research
   - Use iterative feedback for complex topics
   - Save `.env` in `.gitignore` (don't commit API keys!)

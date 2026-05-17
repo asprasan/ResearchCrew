@@ -68,11 +68,11 @@ Want to see it in action?
 
 - **[First Research Example](examples/first-research.md)** — Complete walkthrough of a research topic
 - **[Multi-Day Workflow](examples/multi-day-workflow.md)** — How to iterate with feedback
-
+<!-- 
 ## FAQ & Glossary
 
 - **[FAQ](faq.md)** — Common questions and troubleshooting
-- **[Glossary](glossary.md)** — Key terms explained
+- **[Glossary](glossary.md)** — Key terms explained -->
 
 ## Philosophy
 

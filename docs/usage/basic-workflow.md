@@ -6,9 +6,9 @@ Conduct a single-round research investigation.
 
 A basic research workflow is a single end-to-end pipeline run:
 
-1. **Provide topic** → Create `input.md` with research question
+1. **Provide topic** → Create `inputs/input.md` with research question
 2. **Run crew** → `crewai run`
-3. **Get report** → Read `report.md` with citations
+3. **Get report** → Read `outputs/<yyyymmdd>.md` with citations
 
 This is ideal for one-off research tasks or exploring a topic for the first time.
 
@@ -18,7 +18,7 @@ This is ideal for one-off research tasks or exploring a topic for the first time
 
 Create `input.md` in the project root:
 
-```markdown
+```md
 # Research Topic: Quantum Computing in 2025
 
 Research the current state of quantum computing in 2025. Include:
@@ -45,14 +45,12 @@ Starting crew execution...
 ✓ Reporting Analyst: Generated report
 
 Output files created:
-- report.md (final report)
-- 20250516_extraction.json (extracted claims)
-- 20250516_synthesis.md (synthesized findings)
+- outputs/<yyyymmdd>.md (final report)
 ```
 
 ### 3. Review the Output
 
-Open `report.md`:
+Open `outputs/<yyyymmdd>.md`:
 
 ```markdown
 # Research Report: Quantum Computing in 2025
@@ -91,7 +89,7 @@ Every claim includes a citation [text](URL) you can click.
 
 ## Output Files
 
-### report.md
+### [yyyymmdd].md
 
 Your final research output. This is what you share with others.
 
@@ -101,7 +99,7 @@ Your final research output. This is what you share with others.
 - Organized by subtopic
 - Notes "Insufficient data" where gaps exist
 - Publication-ready quality
-
+<!-- 
 ### [timestamp]_extraction.json
 
 Intermediate output: raw extracted claims.
@@ -145,7 +143,7 @@ Intermediate output: synthesized findings before final reporting.
 - Notes contradictions between sources
 - Internal reference URLs (not final citations)
 
-Use this to validate synthesis logic or debug quality issues.
+Use this to validate synthesis logic or debug quality issues. -->
 
 ## Common Patterns
 

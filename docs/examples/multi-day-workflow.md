@@ -43,48 +43,16 @@ crewai run
 
 Runtime: ~10 minutes.
 
-### Evening - First Review
-
-You review `report.md`. Key findings:
-
-**Good coverage:**
-
-- Technical barriers well-documented
-- Cost analysis included
-- Skills gaps identified
-
-**Gaps noticed:**
-
-- Limited on enterprise-specific challenges (security, compliance especially)
-- Few real case studies or examples
-- No discussion of solutions/workarounds
-- Missing: perspective from development teams themselves
-
-**Feedback logged for tomorrow:**
-
-```markdown
-## User Feedback - Day 1 Evening
-
-Round 1 notes:
-- Technical barriers: excellent coverage
-- Need more on: enterprise security/compliance perspective
-- Need more on: actual case studies and company examples
-- Need to add: solutions teams are using to overcome barriers
-- Future: Developer perspective and voice (not just analyst view)
-
-Will provide formal feedback tomorrow after more thought.
-```
-
 ---
 
 ## Day 2: First Iteration - Enterprise Perspective
 
 ### Morning - Review & Plan
 
-You've thought overnight. Add formal feedback to `report.md`:
+Add formal feedback to `outputs/<yyyymmdd>.md`:
 
 ```markdown
-## User Feedback - Round 2
+## User Feedback
 
 ### Areas to Explore More:
 
@@ -132,92 +100,16 @@ The crew:
 2. Sees your feedback about enterprise security, case studies, solutions
 3. Searches for: "enterprise AI security requirements", "case studies AI adoption", etc.
 4. Integrates findings with prior research
-5. Generates updated `report.md`
-
-### Evening - Second Review
-
-Updated report now includes:
-
-**New section: Enterprise Security Barriers**
-
-```markdown
-### Data Governance Conflicts
-
-[Enterprises require data sovereignty](https://enterprise-governance.com/ai-2025),
-but [many AI platforms train on user data](https://ai-licensing.com/data-practices).
-
-Example conflict:
-- [EU enterprises must comply with GDPR](https://gdpr-guide.com/ai)
-- [GDPR prohibits cross-border data transfers without specific safeguards](https://data-compliance.com)
-- [Most US-based AI platforms process data in US data centers](https://ai-infrastructure.com)
-
-Solutions being adopted:
-- [Deploy on-premises models](https://enterprise-ai-deployment.com)
-- [Use fine-tuned models on private infrastructure](https://private-model-training.com)
-- [Data processing agreements with AI vendors](https://data-processing-agreements.com)
-```
-
-**New section: Case Studies**
-
-```markdown
-### Case Study 1: Goldman Sachs
-
-[Goldman Sachs deployed internal AI for code review](https://gs-case-study.com),
-but [required 18 months of infrastructure preparation](https://financial-ai-timeline.com).
-
-Investment: [Estimated $10-15M](https://financial-sector-investment.com)
-Timeline: [18 months planning + 12 months deployment](https://enterprise-deployment-timeline.com)
-
-Key barrier overcome: [Building internal model infrastructure](https://private-ai-infrastructure.com)
-
-### Case Study 2: Accenture
-
-[Accenture rolled out AI tools to 50,000 developers](https://accenture-case-study.com),
-but [faced adoption rates of only 15% initially](https://adoption-metrics.com).
-
-Key learning: [Tool integration into existing workflows is critical](https://workflow-integration.com)
-
-Solution: [Custom plugins for existing IDEs](https://ide-integration.com)
-Result: [Adoption increased to 60% after tool integration](https://adoption-improvement.com)
-```
-
-**New section: Pragmatic Solutions**
-
-```markdown
-### Solution 1: Private Model Deployment
-
-[Many enterprises deploy open-source models on internal infrastructure](https://private-llm-deployment.com),
-including:
-- [Llama 2 or Mistral](https://open-source-models.com)
-- [Custom fine-tuning on enterprise code](https://model-finetuning.com)
-- [Cost: $100K-$500K initial setup](https://deployment-cost.com)
-
-Benefits: [Full data privacy, no external dependencies](https://private-deployment-benefits.com)
-Tradeoffs: [Lower performance than frontier models like GPT-4](https://model-comparison.com)
-
-### Solution 2: Hybrid Approach
-
-[Some enterprises use frontier models for non-sensitive tasks](https://hybrid-ai-strategy.com),
-and [private models for sensitive code/data](https://tiered-ai-approach.com).
-
-Example workflow:
-- Code generation: Use GPT-4 (non-sensitive outputs)
-- Security review: Use private model (requires privacy)
-- Documentation: Use frontier model (reusable outputs)
-```
-
-**Observation:** Report is now much more useful for a whitepaper. But still missing developer perspective.
-
----
+5. Generates new report `outputs/<yyyymmdd>.md`
 
 ## Day 3: Second Iteration - Developer Voice
 
-### Morning Feedback
+### Feedback
 
 You realized the report lacks **actual developer perspective**. They experience barriers differently than executives. Add feedback:
 
-```markdown
-## User Feedback - Round 3
+```md
+## User Feedback
 
 ### Critical Gap: Developer Perspective
 
@@ -249,59 +141,6 @@ If available, research:
 - Actual adoption % among developers using the tools
 ```
 
-### Midday - Run Iteration
-
-```bash
-crewai run
-```
-
-### Evening - Review
-
-Report now includes **Developer Sentiment** section:
-
-```markdown
-## Developer Perspective on AI Adoption
-
-### Developer Surveys
-
-[According to Stack Overflow 2024 survey](https://stackoverflow-survey.com/2024),
-[48% of developers actively use AI tools](https://ai-adoption-survey.com),
-with [satisfaction ratings of 3.5/5](https://developer-satisfaction.com).
-
-Common sentiment:
-- [AI tools are useful but unreliable](https://developer-feedback.com)
-- [Security concerns about code review](https://ai-code-security-concern.com)
-- [Training required to use effectively](https://ai-learning-curve.com)
-
-### Developer Concerns
-
-Top barriers from developer perspective:
-1. [AI hallucinations causing bugs](https://hallucination-incidents.com)
-2. [Uncertainty about license compliance](https://ai-code-licensing.com)
-3. [Concern about code secrets leaking](https://code-security-concerns.com)
-4. [Workflow disruption](https://adoption-friction.com)
-
-[One developer interviewed said](https://developer-quote.com):
-"We tested ChatGPT for code generation, but had to re-review everything. 
-The time savings were minimal after factoring in security reviews and testing."
-
-### Developer Wins
-
-Where developers see value:
-- [Boilerplate code generation (saves 5-10 min per task)](https://productivity-gain.com)
-- [Documentation assistance](https://doc-generation-value.com)
-- [Learning new frameworks/languages](https://learning-aid.com)
-
-[Survey data shows 60% of developers who use AI regularly report productivity gains](https://productivity-impact.com).
-
-### Training & Onboarding Challenges
-
-[Enterprises underestimate AI training needs](https://training-requirements.com):
-- [Typical onboarding: 40-80 hours per developer](https://onboarding-time.com)
-- [Many developers skip security practices initially](https://security-training-gap.com)
-- [Best practices: structured training + tool integration](https://best-practices-training.com)
-```
-
 **Status after Day 3:**
 
 - Technical barriers (enterprise security, compliance)
@@ -314,12 +153,12 @@ Report is now comprehensive enough for a whitepaper.
 
 ---
 
-## Day 4: Final Polish (Optional)
+## Day 4: Final Polish
 
 You review the comprehensive report. It's good, but a few final tweaks would improve it:
 
 ```markdown
-## User Feedback - Round 4 (Final Polish)
+## User Feedback
 
 ### Minor Additions:
 
@@ -349,26 +188,6 @@ crewai run
 ```
 
 Final report now includes executive summary, decision framework, and timelines.
-
----
-
-## Exporting the Final Report
-
-```bash
-cp report.md AI_Adoption_Barriers_Whitepaper_2025_05.md
-```
-
-The report now contains:
-
-- Technical, organizational, financial barriers (enterprise view)
-- Real case studies and company examples
-- Practical solutions currently being used
-- Developer sentiment and perspectives
-- Training and adoption timelines
-- ROI calculations and decision frameworks
-- Full citations and sources for every claim
-
-**Quality result:** Ready for whitepaper, executive briefing, or strategic planning.
 
 ---
 
