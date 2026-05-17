@@ -1,0 +1,1491 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://asprasan.github.io/ResearchCrew/architecture/">
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../examples/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Architecture & Design - ResearchCrew</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ResearchCrew" class="md-header__button md-logo" aria-label="ResearchCrew" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ResearchCrew
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture &amp; Design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ResearchCrew" class="md-nav__button md-logo" aria-label="ResearchCrew" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ResearchCrew
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResearchCrew Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture &amp; Design
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture &amp; Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-5-agent-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 5-Agent Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 5-Agent Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#each-agents-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Each Agent's Role
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Each Agent&#39;s Role">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-research-planner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Research Planner
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-web-crawler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Web Crawler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-content-extractor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Content Extractor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-synthesis-researcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Synthesis Researcher
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-reporting-analyst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Reporting Analyst
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-sequential-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Sequential Pipeline?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-human-in-the-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Human-in-the-Loop?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-citations-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Citations First?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-multi-day-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Multi-Day Memory?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliability-pipeline-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability Pipeline Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Examples
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/first-research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example: First Research on AI Governance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/multi-day-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example: Multi-Day Workflow with Feedback
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Usage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/basic-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/iterative-research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Iterative Research: Human-Guided Exploration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/citations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Citations &amp; Traceability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/human-in-loop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human-in-the-Loop Research
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/reliability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reliability Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-5-agent-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 5-Agent Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 5-Agent Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#each-agents-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Each Agent's Role
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Each Agent&#39;s Role">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-research-planner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Research Planner
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-web-crawler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Web Crawler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-content-extractor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Content Extractor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-synthesis-researcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Synthesis Researcher
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-reporting-analyst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Reporting Analyst
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-sequential-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Sequential Pipeline?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-human-in-the-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Human-in-the-Loop?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-citations-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Citations First?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-multi-day-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Multi-Day Memory?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliability-pipeline-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability Pipeline Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="architecture-design">Architecture &amp; Design</h1>
+<h2 id="the-5-agent-pipeline">The 5-Agent Pipeline</h2>
+<p>ResearchCrew executes research as a sequential pipeline of 5 specialized agents. Each agent handles a specific aspect of the research process.</p>
+<h3 id="pipeline-flow">Pipeline Flow</h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Research Topic
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    ↓
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>[1] Research Planner
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    ├─ Analyzes the research topic
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    ├─ Identifies gaps based on prior research
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    └─ Generates 2-3 concrete search queries
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    ↓
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>[2] Web Crawler
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    ├─ Searches for authoritative URLs (EXASearch)
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    ├─ Applies quality filters
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    └─ Deduplicates against previously crawled content
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    ↓
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>[3] Content Extractor
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    ├─ Fetches full page content
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    ├─ Extracts verifiable claims with quotes
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    └─ Records confidence levels per claim
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    ↓
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>[4] Synthesis Researcher
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    ├─ Groups claims by theme/subtopic
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    ├─ Identifies patterns and contradictions
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    └─ Flags conflicting information
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    ↓
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>[5] Reporting Analyst
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    ├─ Writes narrative prose
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    ├─ Integrates claims into coherent findings
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    └─ Generates [claim](URL) citations
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    ↓
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>Publication-Ready Report
+</span></code></pre></div>
+<h2 id="each-agents-role">Each Agent's Role</h2>
+<h3 id="1-research-planner">1. Research Planner</h3>
+<p><strong>Input:</strong> Research topic + previous research context (if iterating)</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Analyzes what has already been researched (by reading prior outputs)</li>
+<li>Identifies gaps and new angles to explore</li>
+<li>Creates 2-3 concrete, specific search queries</li>
+<li>Considers user feedback if this is an iteration</li>
+</ul>
+<p><strong>Output:</strong> Structured research plan with search queries</p>
+<p><strong>Example:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Topic: AI in Healthcare
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Prior research: Diagnostic tools, regulatory compliance
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Gaps to explore: Implementation in rural hospitals, cost analysis, AI-human collaboration
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Search queries:
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>1. &quot;AI diagnostic tools implementation challenges rural hospitals 2024&quot;
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>2. &quot;Cost-benefit analysis AI medical imaging systems&quot;
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>3. &quot;Human-AI collaboration in clinical workflows&quot;
+</span></code></pre></div>
+<h3 id="2-web-crawler">2. Web Crawler</h3>
+<p><strong>Input:</strong> Search queries from Research Planner</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Uses EXASearch to semantically search for authoritative URLs</li>
+<li>Applies quality filters (excludes Medium, Reddit, low-signal domains)</li>
+<li>Deduplicates against previously crawled URLs (via memory)</li>
+<li>Ranks results by relevance and authority</li>
+<li>Returns 3-5 URLs per topic</li>
+</ul>
+<p><strong>Output:</strong> List of high-confidence URLs with relevance scores</p>
+<p><strong>Reliability Features:</strong></p>
+<ul>
+<li>Source filtering (skips unreliable domains)</li>
+<li>Deduplication (avoids redundant crawling)</li>
+<li>Authority ranking</li>
+</ul>
+<h3 id="3-content-extractor">3. Content Extractor</h3>
+<p><strong>Input:</strong> URLs from Web Crawler</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Fetches the full page content</li>
+<li>Extracts specific claims and supporting quotes</li>
+<li>Records confidence levels: HIGH / MEDIUM / LOW</li>
+<li>Structures output as JSON with metadata</li>
+</ul>
+<p><strong>Output:</strong> JSON file with extracted claims</p>
+<p><strong>Example:</strong></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/ai-healthcare&quot;</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;claims&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;claim&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AI diagnostic tools can achieve 95% accuracy in early cancer detection&quot;</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">&quot;quote&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Our AI system achieved 95% accuracy...&quot;</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HIGH&quot;</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="nt">&quot;source_context&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Published medical journal study&quot;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Reliability Features:</strong></p>
+<ul>
+<li>Verbatim quotes (not paraphrases)</li>
+<li>Confidence scoring</li>
+<li>Source context preservation</li>
+</ul>
+<h3 id="4-synthesis-researcher">4. Synthesis Researcher</h3>
+<p><strong>Input:</strong> Extracted claims from Content Extractor</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Groups claims by theme (e.g., diagnostic tools, implementation barriers, costs)</li>
+<li>Identifies patterns and trends across sources</li>
+<li>Flags contradictions between sources</li>
+<li>Notes areas where data is insufficient</li>
+<li>Preserves URL attribution for traceability</li>
+</ul>
+<p><strong>Output:</strong> Markdown document with synthesized findings</p>
+<p><strong>Example:</strong></p>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gu">## Diagnostic Accuracy</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Multiple sources report 90-95% accuracy for AI tools in early detection:
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">-</span><span class="w"> </span>Study A: 95% accuracy in cancer detection (https://...)
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">-</span><span class="w"> </span>Study B: 92% accuracy in radiology (https://...)
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">-</span><span class="w"> </span>Study C: 88% accuracy in pathology (https://...)
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>Synthesis: Accuracy varies by domain and dataset, but generally 85-95%.
+</span></code></pre></div>
+<p><strong>Reliability Features:</strong></p>
+<ul>
+<li>Cross-source pattern identification</li>
+<li>Contradiction flagging</li>
+<li>Gap identification</li>
+</ul>
+<h3 id="5-reporting-analyst">5. Reporting Analyst</h3>
+<p><strong>Input:</strong> Synthesized findings from Synthesis Researcher</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Writes narrative prose integrating findings</li>
+<li>Creates direct citations using <a href="URL">claim</a> format</li>
+<li>Preserves source context from synthesis</li>
+<li>Notes "Insufficient data" where gaps exist</li>
+<li>Ensures publication-ready markdown</li>
+</ul>
+<p><strong>Output:</strong> Final research report (report.md)</p>
+<p><strong>Example:</strong></p>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gu">## Current State of AI in Diagnostics</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>AI diagnostic tools have achieved significant accuracy in recent years. 
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>[<span class="nt">Multiple studies report 90-95% accuracy in early cancer detection</span>](<span class="na">https://...</span>), 
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>with [<span class="nt">pathology being slightly less accurate at 88%</span>](<span class="na">https://...</span>).
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>However, [<span class="nt">implementation challenges remain in rural hospitals</span>](<span class="na">https://...</span>),
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>particularly around infrastructure and training requirements.
+</span></code></pre></div>
+<p><strong>Reliability Features:</strong></p>
+<ul>
+<li>Direct URL citations (every claim is traceable)</li>
+<li>No invented quotes or sources</li>
+<li>Explicit gap flagging</li>
+</ul>
+<h2 id="key-design-decisions">Key Design Decisions</h2>
+<h3 id="why-sequential-pipeline">Why Sequential Pipeline?</h3>
+<p>Each agent builds on the output of the previous agent. This allows for:</p>
+<ul>
+<li><strong>Specialization:</strong> Each agent focuses on one aspect</li>
+<li><strong>Quality gates:</strong> Poor outputs from one stage affect the next (visible)</li>
+<li><strong>Debugging:</strong> Easy to isolate where quality issues arise</li>
+<li><strong>Transparency:</strong> You can inspect intermediate outputs</li>
+</ul>
+<h3 id="why-human-in-the-loop">Why Human-in-the-Loop?</h3>
+<p>Research is iterative and guided. After each run:</p>
+<ul>
+<li>Human reviews findings for accuracy and completeness</li>
+<li>Human identifies gaps or misconceptions</li>
+<li>Human provides guidance for next research round</li>
+<li>System learns from feedback and refines</li>
+</ul>
+<p>This prevents:</p>
+<ul>
+<li>Narrow or biased research (humans catch tunnel vision)</li>
+<li>Hallucinations (humans validate against domain knowledge)</li>
+<li>Wasted research (humans redirect effort)</li>
+</ul>
+<h3 id="why-citations-first">Why Citations First?</h3>
+<p>Every claim must be traceable to a source:</p>
+<ul>
+<li><strong>Anti-hallucination:</strong> Forces facts to come from real sources</li>
+<li><strong>Credibility:</strong> Readers can verify claims themselves</li>
+<li><strong>Accountability:</strong> Clear lineage from source to report</li>
+</ul>
+<p>This means:</p>
+<ul>
+<li>No invented quotes</li>
+<li>No made-up statistics</li>
+<li>No synthesis without source attribution</li>
+</ul>
+<h3 id="why-multi-day-memory">Why Multi-Day Memory?</h3>
+<p>Research questions are complex and often require multiple rounds:</p>
+<ul>
+<li><strong>Context preservation:</strong> Remember what was already researched</li>
+<li><strong>Deduplication:</strong> Avoid re-crawling the same sources</li>
+<li><strong>Iteration:</strong> Build on prior findings, not restart each time</li>
+</ul>
+<p>The system uses LanceDB to store:</p>
+<ul>
+<li>Prior research outputs</li>
+<li>Extracted claims and sources</li>
+<li>Crawler history (to avoid redundant searches)</li>
+</ul>
+<h2 id="llm-configuration">LLM Configuration</h2>
+<p>All agents use a single LLM (configurable via <code>.env</code>):</p>
+<ul>
+<li><strong>Model:</strong> Set <code>OPENROUTER_MODEL_NAME</code></li>
+<li><strong>Provider:</strong> OpenRouter supports most major LLM providers</li>
+<li><strong>Trade-off:</strong> Faster models (Haiku) for speed; better models (GPT-4, Claude) for accuracy</li>
+</ul>
+<p>Future versions may use different LLMs for different agents based on complexity.</p>
+<h2 id="reliability-pipeline-summary">Reliability Pipeline Summary</h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Research Topic
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    ↓
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>[Planning] Identify gaps and search strategy
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    ↓
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>[Crawling] Quality-filtered source discovery
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    ↓
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>[Extraction] Verbatim claim extraction with confidence
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    ↓
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>[Synthesis] Cross-source pattern identification + contradiction flagging
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    ↓
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>[Reporting] Direct URL citations, gap flagging
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    ↓
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>Publication-Ready, Verified, Cited Report
+</span></code></pre></div>
+<p>Each stage includes checks to ensure reliability:</p>
+<ol>
+<li>Source filtering (web crawler)</li>
+<li>Confidence scoring (extractor)</li>
+<li>Pattern &amp; contradiction detection (synthesis)</li>
+<li>Explicit gap identification (reporter)</li>
+</ol>
+<p>The result is research output you can trust and cite.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
