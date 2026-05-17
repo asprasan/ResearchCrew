@@ -59,8 +59,8 @@ The system uses LanceDB to store and learn from past research. This enables:
 
 - **[Quick Start](getting-started.md)** — 5-minute setup and first run
 - **[Architecture](architecture.md)** — How the 5-agent pipeline works
-- **[Usage Guides](usage/)** — Single-round and multi-round research workflows
-- **[Features in Depth](features/)** — Human guidance, reliability, citations
+- **[Usage Guides](usage/README.md)** — Single-round and multi-round research workflows
+- **[Features in Depth](features/README.md)** — Human guidance, reliability, citations
 
 ## Examples
 
@@ -68,11 +68,11 @@ Want to see it in action?
 
 - **[First Research Example](examples/first-research.md)** — Complete walkthrough of a research topic
 - **[Multi-Day Workflow](examples/multi-day-workflow.md)** — How to iterate with feedback
-
+<!-- 
 ## FAQ & Glossary
 
 - **[FAQ](faq.md)** — Common questions and troubleshooting
-- **[Glossary](glossary.md)** — Key terms explained
+- **[Glossary](glossary.md)** — Key terms explained -->
 
 ## Philosophy
 

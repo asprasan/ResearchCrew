@@ -38,12 +38,12 @@ Edit `.env` and add your API keys. Example:
 
 ```env
 OPENROUTER_API_KEY=sk-your-key-here
-OPENROUTER_MODEL_NAME=openai/gpt-4-turbo
+OPENROUTER_MODEL_NAME=openouter/openai/gpt-4o-mini
 ```
 
 **Which LLM should I use?**
 
-- **Fast research:** Use Haiku or GPT-3.5 (cheaper, faster)
+- **Fast research:** Use Haiku or GPT-4o-mini (cheaper, faster)
 - **Accurate research:** Use GPT-4, Claude 3 Opus (more reliable citations)
 
 See [Configuration](usage/configuration.md) for more options.
@@ -56,17 +56,17 @@ crewai run
 
 This runs the crew with the default input. You'll see:
 
-```
+```bash
 ✓ Research Planner completed
 ✓ Web Crawler completed
 ✓ Content Extractor completed
 ✓ Synthesis Researcher completed
 ✓ Reporting Analyst completed
 
-Report saved to: report.md
+Report saved to: outputs/<yyyymmdd>.md # in the format yyyymmdd.md
 ```
 
-Open `report.md` to see your research findings with citations!
+Open `<yyyymmdd>.md` to see your research findings with citations!
 
 ## File Structure
 
@@ -74,11 +74,8 @@ After running, you'll see these output files:
 
 ```
 researchcrew/
-├── input.md                    # Your research topic (create this)
-├── report.md                   # Final report with citations
-├── [timestamp]_extraction.json # Extracted claims and confidence levels
-├── [timestamp]_synthesis.md    # Synthesized findings (intermediate)
-└── .crew_cache/                # Internal crew state and memory
+├── inputs/input.md
+└── outputs/<yyyymmdd>.md
 ```
 
 ## Provide Your First Research Topic
@@ -99,6 +96,7 @@ crewai run
 ```
 
 The crew will:
+
 1. Plan the research strategy
 2. Search for authoritative sources
 3. Extract verified claims with sources
@@ -107,7 +105,7 @@ The crew will:
 
 ## Iterative Research (Next Round)
 
-After reviewing `report.md`, add your feedback to the end of the report:
+After reviewing `<yyyymmdd>.md`, add your feedback to the end of the report:
 
 ```markdown
 ## User Feedback
@@ -127,13 +125,14 @@ crewai run
 ```
 
 The crew will see your feedback, remember previous research, and iterate accordingly.
+The next report will be saved as `outputs/<yyyymmdd>.md`.
 
 ## Next Steps
 
-- **[Architecture](../architecture.md)** — Understand the 5-agent pipeline
-- **[Usage Guide](../usage/)** — Single-round and multi-round workflows
-- **[Features](../features/)** — Learn about reliability checks and citations
-- **[Examples](../examples/)** — See complete research walkthroughs
+- **[Architecture](architecture.md)** — Understand the 5-agent pipeline
+- **[Usage Guide](usage/README.md)** — Single-round and multi-round workflows
+- **[Features](features/README.md)** — Learn about reliability checks and citations
+- **[Examples](examples/README.md)** — See complete research walkthroughs
 
 ## Troubleshooting
 

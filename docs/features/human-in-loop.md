@@ -78,7 +78,7 @@ Example: If researching "AI in healthcare," you might be:
 
 ### During Review (Between Runs)
 
-After each run, review `report.md` and ask:
+After each run, review `<yyyymmdd>.md` and ask:
 
 1. **What's missing?** What topics should be deeper?
 2. **What's unnecessary?** What can be skipped?
@@ -87,7 +87,7 @@ After each run, review `report.md` and ask:
 
 ### Providing Feedback
 
-Edit `report.md` and add a "User Feedback" section at the end:
+Edit `<yyyymmdd>.md` and add a "User Feedback" section at the end:
 
 ```markdown
 ## User Feedback - Round 2
@@ -297,5 +297,5 @@ From Carol:
 ## Next Steps
 
 - **[Iterative Research Workflow](../usage/iterative-research.md)** — Step-by-step guide
-- **[Examples](../examples/)** — Real multi-round research examples
+- **[Examples](../examples/index.md)** — Real multi-round research examples
 - **[Reliability Features](reliability.md)** — Quality checks throughout pipeline

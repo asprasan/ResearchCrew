@@ -54,7 +54,7 @@ Publication-Ready Report
 
 **Example:**
 
-```
+```txt
 Topic: AI in Healthcare
 Prior research: Diagnostic tools, regulatory compliance
 Gaps to explore: Implementation in rural hospitals, cost analysis, AI-human collaboration
@@ -252,7 +252,7 @@ Future versions may use different LLMs for different agents based on complexity.
 
 ## Reliability Pipeline Summary
 
-```
+```txt
 Research Topic
     ↓
 [Planning] Identify gaps and search strategy

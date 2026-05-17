@@ -39,14 +39,14 @@ Run:
 crewai run
 ```
 
-You get `report.md` with initial findings on remote work trends.
+You get `<yyyymmdd>.md` with initial findings on remote work trends.
 
 ### Round 2: Provide Feedback & New Direction
 
-After reviewing `report.md`, add feedback at the end:
+After reviewing `<yyyymmdd>.md`, add feedback at the end:
 
 ```markdown
-## User Feedback - Round 2
+## User Feedback
 
 Good coverage on company policies and trends. Now explore:
 
@@ -77,7 +77,7 @@ The crew:
 - Skips areas you said to de-prioritize
 - Integrates findings from both rounds
 
-You get an updated `report.md` with deeper analysis on your chosen angles.
+You get an updated `<yyyymmdd>.md` with deeper analysis on your chosen angles.
 
 ### Round 3: Refine Further
 
@@ -90,7 +90,7 @@ Review the updated report. You notice:
 Add new feedback:
 
 ```markdown
-## User Feedback - Round 3
+## User Feedback
 
 Excellent analysis on mental health. The hybrid model section is good but needs:
 - Real case studies (which companies, what results)
@@ -120,7 +120,7 @@ ResearchCrew uses **LanceDB** to persist memory across runs:
 
 **What it remembers:**
 
-- Previous research outputs (report.md, synthesis.md)
+- Previous research outputs
 - Your input topic
 - Extracted claims and sources
 - URLs already crawled
@@ -295,5 +295,5 @@ The report includes full citations, so others can:
 ## Next Steps
 
 - **[Configuration](configuration.md)** — Optimize LLM choices and performance
-- **[Examples](../examples/)** — See full multi-round workflow examples
+- **[Examples](../examples/index.md)** — See full multi-round workflow examples
 - **[Architecture](../architecture.md)** — Understand how feedback is incorporated

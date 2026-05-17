@@ -303,7 +303,7 @@ ResearchCrew uses markdown inline citations. This format:
 
 Could be extended to:
 
-- [x] Markdown inline citations (current)
+- [ ] Markdown inline citations (current)
 - [ ] Footnotes with bibliography
 - [ ] BibTeX entries
 - [ ] APA/MLA/Chicago style
@@ -335,6 +335,6 @@ ResearchCrew citations have limitations:
 
 ## Next Steps
 
-- **[Reliability Features](reliability.md)** — How quality is ensured
-- **[Human-in-the-Loop](human-in-loop.md)** — Using feedback to validate
-- **[Examples](../examples/)** — See real reports with citations
+- **[Reliability Features](./reliability.md)** — How quality is ensured
+- **[Human-in-the-Loop](./human-in-loop.md)** — Using feedback to validate
+- **[Examples](../examples/index.md)** — See real reports with citations
